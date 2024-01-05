@@ -1,41 +1,35 @@
 package application
 
 import (
-	"fmt"
+	"go-clean-arch-ddd/application/mocks"
 	"go-clean-arch-ddd/domain/user"
 )
 
 type UserService struct {
 	userRepo user.Repository
+	hashTool *mocks.MockHashTool
 }
 
-func NewUserService(repository user.Repository) *UserService {
-	return &UserService{
-		userRepo: repository,
-	}
-}
-
-func (h *UserService) Register(name string, email string, password string) (string, error) {
-	u := user.NewUser(name, email, password)
-	id, err := h.userRepo.Create(u)
-	return id, err
-}
-
-func (h *UserService) Login(email string, password string) (string, error) {
-	u, err := h.userRepo.GetByEmail(email)
+func (s *UserService) Register(name string, email string, password string) (string, error) {
+	hashPassword, err := s.hashTool.Hash(password)
 	if err != nil {
 		return "", err
 	}
-	validate := u.PasswordValidate(password)
-	if !validate {
-		return "", fmt.Errorf("password is not correct")
+	u := user.User{
+		Name:         name,
+		Email:        email,
+		HashPassword: hashPassword,
 	}
-	return u.ID, nil
-}
-func (h *UserService) PasswordReset(email string, password string) error {
-	u, err := h.userRepo.GetByEmail(email)
+	id, err := s.userRepo.Create(&u)
 	if err != nil {
-		return err
+		return "", err
 	}
-	return u.ResetPassword(password)
+	return id, nil
+}
+
+func NewUserService(repository user.Repository, hashTool *mocks.MockHashTool) *UserService {
+	return &UserService{
+		userRepo: repository,
+		hashTool: hashTool,
+	}
 }

@@ -1,0 +1,11 @@
+with-expecter: True
+filename: "mock_{{.InterfaceName}}.go"
+mockname: "Mock{{.InterfaceName}}"
+dir: "{{.InterfaceDir}}/mocks/"
+outpkg: "mocks"
+all: True
+packages:
+  go-clean-arch-ddd/domain/user:
+    config: {}
+  go-clean-arch-ddd/application:
+    config: {}
