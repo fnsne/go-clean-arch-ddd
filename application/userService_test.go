@@ -19,12 +19,24 @@ type UserServiceSuite struct {
 	mockUserRepo *usermocks.MockRepository
 	userService  *application.UserService
 	mockHashTool *mocks.MockHashTool
+	userFactory  userdomain.UserFactory
 }
 
 func (suite *UserServiceSuite) SetupTest() {
 	suite.mockUserRepo = usermocks.NewMockRepository(suite.T())
 	suite.mockHashTool = mocks.NewMockHashTool(suite.T())
-	suite.userService = application.NewUserService(suite.mockUserRepo, suite.mockHashTool)
+	suite.userFactory = func(name string, email string, password string) (*userdomain.User, error) {
+		hashPassword, err := suite.mockHashTool.Hash(password)
+		if err != nil {
+			return nil, err
+		}
+		return &userdomain.User{
+			Name:         name,
+			Email:        email,
+			HashPassword: hashPassword,
+		}, nil
+	}
+	suite.userService = application.NewUserService(suite.mockUserRepo, suite.userFactory)
 }
 
 func (suite *UserServiceSuite) Test_Register() {

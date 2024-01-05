@@ -1,35 +1,29 @@
 package application
 
 import (
-	"go-clean-arch-ddd/application/mocks"
 	"go-clean-arch-ddd/domain/user"
 )
 
 type UserService struct {
-	userRepo user.Repository
-	hashTool *mocks.MockHashTool
+	userRepo    user.Repository
+	userFactory user.UserFactory
 }
 
 func (s *UserService) Register(name string, email string, password string) (string, error) {
-	hashPassword, err := s.hashTool.Hash(password)
+	u, err := s.userFactory(name, email, password)
 	if err != nil {
 		return "", err
 	}
-	u := user.User{
-		Name:         name,
-		Email:        email,
-		HashPassword: hashPassword,
-	}
-	id, err := s.userRepo.Create(&u)
+	id, err := s.userRepo.Create(u)
 	if err != nil {
 		return "", err
 	}
 	return id, nil
 }
 
-func NewUserService(repository user.Repository, hashTool *mocks.MockHashTool) *UserService {
+func NewUserService(repository user.Repository, factory user.UserFactory) *UserService {
 	return &UserService{
-		userRepo: repository,
-		hashTool: hashTool,
+		userRepo:    repository,
+		userFactory: factory,
 	}
 }
