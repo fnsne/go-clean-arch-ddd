@@ -1,6 +1,6 @@
 module go-clean-arch-ddd
 
-go 1.21
+go 1.20
 
 require (
 	github.com/lithammer/shortuuid v3.0.0+incompatible
