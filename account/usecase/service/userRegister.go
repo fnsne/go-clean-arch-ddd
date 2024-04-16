@@ -3,7 +3,7 @@ package service
 import (
 	"go-clean-arch-ddd/account/entity"
 	"go-clean-arch-ddd/account/usecase/interface/in/register"
-	"go-clean-arch-ddd/account/usecase/interface/out/mocks"
+	"go-clean-arch-ddd/account/usecase/interface/out"
 )
 
 func (s *UserRegisterService) Execute(input register.UserRegisterInput) (register.UserRegisterOutput, error) {
@@ -17,9 +17,9 @@ func (s *UserRegisterService) Execute(input register.UserRegisterInput) (registe
 }
 
 type UserRegisterService struct {
-	userRepository *mocks.MockUserRepository
+	userRepository out.UserRepository
 }
 
-func NewUserRegisterService(userRepository *mocks.MockUserRepository) *UserRegisterService {
+func NewUserRegisterService(userRepository out.UserRepository) *UserRegisterService {
 	return &UserRegisterService{userRepository: userRepository}
 }
