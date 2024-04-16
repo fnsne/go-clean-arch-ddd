@@ -1,11 +1,12 @@
 with-expecter: True
+recursive: True
 filename: "mock_{{.InterfaceName}}.go"
 mockname: "Mock{{.InterfaceName}}"
 dir: "{{.InterfaceDir}}/mocks/"
 outpkg: "mocks"
 all: True
 packages:
-  go-clean-arch-ddd/domain/user:
+  go-clean-arch-ddd/account/usecase/interface/in:
     config: {}
-  go-clean-arch-ddd/application:
+  go-clean-arch-ddd/account/usecase/interface/out:
     config: {}
