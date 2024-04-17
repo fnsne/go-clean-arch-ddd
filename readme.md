@@ -18,3 +18,5 @@ This template can use for monolithic or microservice architecture.
 ## How to use
 1. Clone this repository
 2. every time you want to create new module, just copy `template` folder and rename it to your module name.
+
+## account is a module example

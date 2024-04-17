@@ -6,6 +6,7 @@ require (
 	github.com/kataras/iris/v12 v12.2.7
 	github.com/lithammer/shortuuid/v4 v4.0.0
 	github.com/stretchr/testify v1.8.4
+	go.uber.org/fx v1.21.0
 )
 
 require (
@@ -45,6 +46,9 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/yosssi/ace v0.0.5 // indirect
+	go.uber.org/dig v1.17.1 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
+	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3 // indirect
 	golang.org/x/net v0.21.0 // indirect

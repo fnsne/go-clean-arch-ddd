@@ -19,8 +19,8 @@ func NewHandlers(userRegisterUseCase register.UserRegisterUseCase) *Handlers {
 	return &Handlers{userRegisterUseCase: userRegisterUseCase}
 }
 
-func BindUseCases(app *iris.Application, urlPrefix string, userRegisterUseCase register.UserRegisterUseCase) {
-	api := app.Party(urlPrefix)
+func BindUseCases(app *iris.Application, userRegisterUseCase register.UserRegisterUseCase) {
+	api := app.Party("/account")
 	handlers := NewHandlers(userRegisterUseCase)
 
 	api.Post("/register", handlers.UserRegister)

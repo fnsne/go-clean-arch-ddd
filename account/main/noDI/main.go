@@ -14,7 +14,7 @@ func main() {
 	userRegisterService := service.NewUserRegisterService(userRepository)
 
 	//todo change to use DI framework to inject all use cases
-	irisInfra.BindUseCases(application, "/account", userRegisterService)
+	irisInfra.BindUseCases(application, userRegisterService)
 
 	_ = application.Run(iris.Addr(":8080"))
 }
