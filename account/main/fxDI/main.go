@@ -30,21 +30,20 @@ func main() {
 			),
 		),
 		fx.Provide(iris.Default),
-		fx.Invoke(
-			func(lifecycle fx.Lifecycle, app *iris.Application, userRegisterUseCase register.UserRegisterUseCase) {
-				lifecycle.Append(fx.Hook{
-					OnStart: func(context.Context) error {
-						irisHandler.BindUseCases(app, userRegisterUseCase)
-						err := app.Run(iris.Addr(":8080"))
-						return err
-					},
-				})
-
-			},
-		),
+		fx.Invoke(newFxServer),
 	)
 	err := app.Start(context.Background())
 	if err != nil {
 		panic(err)
 	}
+}
+
+func newFxServer(lifecycle fx.Lifecycle, app *iris.Application, userRegisterUseCase register.UserRegisterUseCase) {
+	lifecycle.Append(fx.Hook{
+		OnStart: func(context.Context) error {
+			irisHandler.BindUseCases(app, userRegisterUseCase)
+			err := app.Run(iris.Addr(":8080"))
+			return err
+		},
+	})
 }
