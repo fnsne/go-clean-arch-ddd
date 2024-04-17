@@ -11,25 +11,37 @@ type UserRegisterInput struct {
 	Name     string
 }
 
-func NewAccountHandlers(app *iris.Application, accountServicePrefix string, userRegisterUseCase register.UserRegisterUseCase) {
-	api := app.Party(accountServicePrefix)
-	api.Post("/register", func(ctx iris.Context) {
-		var input UserRegisterInput
-		err := ctx.ReadJSON(&input)
-		if err != nil {
-			ctx.StatusCode(iris.StatusBadRequest)
-			return
-		}
-		output, err := userRegisterUseCase.Execute(register.UserRegisterInput{
-			Email:    input.Email,
-			Password: input.Password,
-			Name:     input.Name,
-		})
-		if err != nil {
-			ctx.StatusCode(iris.StatusInternalServerError)
-			return
-		}
-		ctx.Application().Logger().Info("User registered with ID: " + output.ID + " success")
-		_ = ctx.JSON(iris.Map{"id": output.ID})
+type Handlers struct {
+	userRegisterUseCase register.UserRegisterUseCase
+}
+
+func NewHandlers(userRegisterUseCase register.UserRegisterUseCase) *Handlers {
+	return &Handlers{userRegisterUseCase: userRegisterUseCase}
+}
+
+func BindUseCases(app *iris.Application, urlPrefix string, userRegisterUseCase register.UserRegisterUseCase) {
+	api := app.Party(urlPrefix)
+	handlers := NewHandlers(userRegisterUseCase)
+
+	api.Post("/register", handlers.UserRegister)
+}
+
+func (h *Handlers) UserRegister(ctx iris.Context) {
+	var input UserRegisterInput
+	err := ctx.ReadJSON(&input)
+	if err != nil {
+		ctx.StatusCode(iris.StatusBadRequest)
+		return
+	}
+	output, err := h.userRegisterUseCase.Execute(register.UserRegisterInput{
+		Email:    input.Email,
+		Password: input.Password,
+		Name:     input.Name,
 	})
+	if err != nil {
+		ctx.Application().Logger().Errorf("[handler] failed to register user: %v", err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
+	_ = ctx.JSON(iris.Map{"id": output.ID})
 }
