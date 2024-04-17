@@ -2,9 +2,9 @@ package iris
 
 import (
 	"github.com/kataras/iris/v12"
-	chagnepassword "go-clean-arch-ddd/account/usecase/interface/in/changePassword"
 	getuser "go-clean-arch-ddd/account/usecase/interface/in/getUser"
 	"go-clean-arch-ddd/account/usecase/interface/in/register"
+	"go-clean-arch-ddd/account/usecase/interface/in/rename"
 	"go.uber.org/fx"
 )
 
@@ -14,7 +14,7 @@ import (
 type FxParams struct {
 	fx.In
 	UserRegisterUseCase       register.UseCase
-	UserChangePasswordUseCase chagnepassword.UseCase
+	UserChangePasswordUseCase rename.UseCase
 	GetUserUseCase            getuser.UseCase
 }
 
@@ -38,26 +38,26 @@ type UserRegisterInput struct {
 }
 
 type Handlers struct {
-	registerUseCase       register.UseCase
-	changePasswordUseCase chagnepassword.UseCase
-	getUserUseCase        getuser.UseCase
+	registerUseCase register.UseCase
+	reanmeUseCase   rename.UseCase
+	getUserUseCase  getuser.UseCase
 }
 
 func BindUseCases(
 	app *iris.Application,
 	registerUseCase register.UseCase,
-	passwordUseCase chagnepassword.UseCase,
+	passwordUseCase rename.UseCase,
 	getUserUseCase getuser.UseCase,
 ) {
 	api := app.Party("/account")
 	handlers := &Handlers{
-		registerUseCase:       registerUseCase,
-		changePasswordUseCase: passwordUseCase,
-		getUserUseCase:        getUserUseCase,
+		registerUseCase: registerUseCase,
+		reanmeUseCase:   passwordUseCase,
+		getUserUseCase:  getUserUseCase,
 	}
 
 	api.Post("/register", handlers.UserRegister)
-	api.Post("/changePassword", handlers.ChangePassword)
+	api.Post("/{id}/rename", handlers.Rename)
 	api.Get("/{id}", handlers.GetUser)
 }
 
@@ -81,14 +81,17 @@ func (h *Handlers) UserRegister(ctx iris.Context) {
 	_ = ctx.JSON(iris.Map{"id": output.ID})
 }
 
-func (h *Handlers) ChangePassword(ctx iris.Context) {
-	var input chagnepassword.Input
+func (h *Handlers) Rename(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+
+	var input rename.Input
 	err := ctx.ReadJSON(&input)
 	if err != nil {
 		ctx.StatusCode(iris.StatusBadRequest)
 		return
 	}
-	err = h.changePasswordUseCase.Execute(input)
+	input.ID = id
+	err = h.reanmeUseCase.Execute(input)
 	if err != nil {
 		ctx.Application().Logger().Errorf("[handler] failed to change password: %v", err)
 		ctx.StatusCode(iris.StatusInternalServerError)

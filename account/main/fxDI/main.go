@@ -5,9 +5,9 @@ import (
 	"github.com/kataras/iris/v12"
 	irisHandler "go-clean-arch-ddd/account/infra/in/iris"
 	portout "go-clean-arch-ddd/account/infra/out"
-	chagnepassword "go-clean-arch-ddd/account/usecase/interface/in/changePassword"
 	getuser "go-clean-arch-ddd/account/usecase/interface/in/getUser"
 	"go-clean-arch-ddd/account/usecase/interface/in/register"
+	chagnepassword "go-clean-arch-ddd/account/usecase/interface/in/rename"
 	portin "go-clean-arch-ddd/account/usecase/interface/out"
 	"go-clean-arch-ddd/account/usecase/service"
 	"go.uber.org/fx"
@@ -21,7 +21,7 @@ func main() {
 	app := fx.New(
 		fx.Provide(fx.Annotate(portout.NewInMemoryUserRepository, fx.As(new(portin.UserRepository)))),
 		fx.Provide(fx.Annotate(service.NewUserRegisterService, fx.As(new(register.UseCase)))),
-		fx.Provide(fx.Annotate(service.NewUserChangePasswordService, fx.As(new(chagnepassword.UseCase)))),
+		fx.Provide(fx.Annotate(service.NewUserRenameService, fx.As(new(chagnepassword.UseCase)))),
 		fx.Provide(fx.Annotate(service.NewGetUserUseCase, fx.As(new(getuser.UseCase)))),
 		fx.Provide(iris.Default),
 		fx.Invoke(newFxServer),

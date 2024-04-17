@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	chagnepassword "go-clean-arch-ddd/account/usecase/interface/in/changePassword"
+	chagnepassword "go-clean-arch-ddd/account/usecase/interface/in/rename"
 
 	mock "github.com/stretchr/testify/mock"
 )

@@ -12,7 +12,7 @@ func main() {
 
 	userRepository := out.NewInMemoryUserRepository()
 	userRegisterService := service.NewUserRegisterService(userRepository)
-	userChangePasswordService := service.NewUserChangePasswordService(userRepository)
+	userChangePasswordService := service.NewUserRenameService(userRepository)
 	getUserService := service.NewGetUserUseCase(userRepository)
 
 	irisInfra.BindUseCases(application, userRegisterService, userChangePasswordService, getUserService)

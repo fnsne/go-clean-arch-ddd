@@ -13,6 +13,10 @@ func (u *User) ChangePassword(password string) {
 	u.Password = password
 }
 
+func (u *User) Rename(name string) {
+	u.Name = name
+}
+
 func NewUser(id string, email string, password string, name string) User {
 	return User{
 		ID:       id,
