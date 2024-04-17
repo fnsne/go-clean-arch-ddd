@@ -26,7 +26,7 @@ func main() {
 		fx.Provide(
 			fx.Annotate(
 				service.NewUserRegisterService,
-				fx.As(new(register.UserRegisterUseCase)),
+				fx.As(new(register.UseCase)),
 			),
 		),
 		fx.Provide(iris.Default),

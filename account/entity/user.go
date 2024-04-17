@@ -1,10 +1,16 @@
 package entity
 
+import "errors"
+
 type User struct {
 	ID       string
 	Email    string
 	Password string
 	Name     string
+}
+
+func (u *User) ChangePassword(password string) {
+	u.Password = password
 }
 
 func NewUser(id string, email string, password string, name string) User {
@@ -15,3 +21,5 @@ func NewUser(id string, email string, password string, name string) User {
 		Name:     name,
 	}
 }
+
+var ErrUserNotFound = errors.New("user not found")

@@ -9,6 +9,14 @@ type InMemoryUserRepository struct {
 	userMap map[string]entity.User
 }
 
+func (i *InMemoryUserRepository) FindByID(id string) (entity.User, error) {
+	user, ok := i.userMap[id]
+	if !ok {
+		return entity.User{}, entity.ErrUserNotFound
+	}
+	return user, nil
+}
+
 func (i *InMemoryUserRepository) NextID() string {
 	return shortuuid.New()
 }

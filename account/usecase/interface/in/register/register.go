@@ -1,6 +1,6 @@
 package register
 
-type UserRegisterUseCase interface {
+type UseCase interface {
 	Execute(input UserRegisterInput) (UserRegisterOutput, error)
 }
 
