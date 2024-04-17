@@ -9,16 +9,15 @@ type GetUserUseCase struct {
 	userRepository out.UserRepository
 }
 
-func (c *GetUserUseCase) Execute(input chagnepassword.Input) (chagnepassword.Output, error) {
+func (c *GetUserUseCase) Execute(input getuser.Input) (getuser.Output, error) {
 	user, err := c.userRepository.FindByID(input.ID)
 	if err != nil {
-		return chagnepassword.Output{}, err
+		return getuser.Output{}, err
 	}
-	return chagnepassword.Output{
-		ID:       user.ID,
-		Email:    user.Email,
-		Name:     user.Name,
-		Password: user.Password,
+	return getuser.Output{
+		ID:    user.ID,
+		Email: user.Email,
+		Name:  user.Name,
 	}, nil
 }
 

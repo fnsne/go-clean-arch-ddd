@@ -3,6 +3,7 @@ package iris
 import (
 	"github.com/kataras/iris/v12"
 	chagnepassword "go-clean-arch-ddd/account/usecase/interface/in/changePassword"
+	getuser "go-clean-arch-ddd/account/usecase/interface/in/getUser"
 	"go-clean-arch-ddd/account/usecase/interface/in/register"
 	"go.uber.org/fx"
 )
@@ -14,17 +15,17 @@ type FxParams struct {
 	fx.In
 	UserRegisterUseCase       register.UseCase
 	UserChangePasswordUseCase chagnepassword.UseCase
+	GetUserUseCase            getuser.UseCase
 }
 
 // BindUseCasesWithFx is a function to bind all use cases with uber fx
 func BindUseCasesWithFx(app *iris.Application, p FxParams) {
-	api := app.Party("/account")
-	handlers := &Handlers{
-		registerUseCase:       p.UserRegisterUseCase,
-		changePasswordUseCase: p.UserChangePasswordUseCase,
-	}
-
-	api.Post("/register", handlers.UserRegister)
+	BindUseCases(
+		app,
+		p.UserRegisterUseCase,
+		p.UserChangePasswordUseCase,
+		p.GetUserUseCase,
+	)
 }
 
 //================================================
@@ -39,17 +40,25 @@ type UserRegisterInput struct {
 type Handlers struct {
 	registerUseCase       register.UseCase
 	changePasswordUseCase chagnepassword.UseCase
+	getUserUseCase        getuser.UseCase
 }
 
-func BindUseCases(app *iris.Application, registerUseCase register.UseCase, passwordUseCase chagnepassword.UseCase) {
+func BindUseCases(
+	app *iris.Application,
+	registerUseCase register.UseCase,
+	passwordUseCase chagnepassword.UseCase,
+	getUserUseCase getuser.UseCase,
+) {
 	api := app.Party("/account")
 	handlers := &Handlers{
 		registerUseCase:       registerUseCase,
 		changePasswordUseCase: passwordUseCase,
+		getUserUseCase:        getUserUseCase,
 	}
 
 	api.Post("/register", handlers.UserRegister)
 	api.Post("/changePassword", handlers.ChangePassword)
+	api.Get("/{id}", handlers.GetUser)
 }
 
 func (h *Handlers) UserRegister(ctx iris.Context) {
@@ -86,4 +95,18 @@ func (h *Handlers) ChangePassword(ctx iris.Context) {
 		return
 	}
 	_ = ctx.JSON(iris.Map{"status": "success"})
+}
+
+func (h *Handlers) GetUser(ctx iris.Context) {
+	output, err := h.getUserUseCase.Execute(getuser.Input{ID: ctx.Params().Get("id")})
+	if err != nil {
+		ctx.Application().Logger().Errorf("[handler] failed to get user: %v", err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
+	_ = ctx.JSON(iris.Map{
+		"id":    output.ID,
+		"email": output.Email,
+		"name":  output.Name,
+	})
 }

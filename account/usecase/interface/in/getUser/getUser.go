@@ -1,10 +1,9 @@
-package chagnepassword
+package getuser
 
 type Output struct {
-	ID       string
-	Email    string
-	Name     string
-	Password string // just for demonstration, should not be included in the output
+	ID    string
+	Email string
+	Name  string
 }
 
 type Input struct {

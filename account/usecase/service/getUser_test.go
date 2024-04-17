@@ -32,12 +32,11 @@ func (suite *GetUserTestSuite) Test_GetUser() {
 		Password: "userPassword",
 		Name:     "123",
 	}, nil)
-	output, err := useCase.Execute(chagnepassword.Input{
+	output, err := useCase.Execute(getuser.Input{
 		ID: "id1",
 	})
 	require.NoError(suite.T(), err)
 	assert.Equal(suite.T(), "id1", output.ID)
 	assert.Equal(suite.T(), "user1@email.123", output.Email)
 	assert.Equal(suite.T(), "123", output.Name)
-	assert.Equal(suite.T(), "userPassword", output.Password)
 }
