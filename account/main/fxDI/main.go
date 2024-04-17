@@ -38,10 +38,10 @@ func main() {
 	}
 }
 
-func newFxServer(lifecycle fx.Lifecycle, app *iris.Application, userRegisterUseCase register.UserRegisterUseCase) {
+func newFxServer(lifecycle fx.Lifecycle, app *iris.Application, params irisHandler.FxParams) {
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
-			irisHandler.BindUseCases(app, userRegisterUseCase)
+			irisHandler.BindUseCasesWithFx(app, params)
 			err := app.Run(iris.Addr(":8080"))
 			return err
 		},

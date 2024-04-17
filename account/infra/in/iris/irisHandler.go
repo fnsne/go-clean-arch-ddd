@@ -3,7 +3,25 @@ package iris
 import (
 	"github.com/kataras/iris/v12"
 	"go-clean-arch-ddd/account/usecase/interface/in/register"
+	"go.uber.org/fx"
 )
+
+//below is for the use of uber fx DI
+
+type FxParams struct {
+	fx.In
+	UserRegisterUseCase register.UserRegisterUseCase
+}
+
+// BindUseCasesWithFx is a function to bind all use cases with uber fx
+func BindUseCasesWithFx(app *iris.Application, params FxParams) {
+	api := app.Party("/account")
+	handlers := NewHandlers(params.UserRegisterUseCase)
+
+	api.Post("/register", handlers.UserRegister)
+}
+
+// above is for the use of uber fx DI
 
 type UserRegisterInput struct {
 	Email    string
@@ -18,7 +36,6 @@ type Handlers struct {
 func NewHandlers(userRegisterUseCase register.UserRegisterUseCase) *Handlers {
 	return &Handlers{userRegisterUseCase: userRegisterUseCase}
 }
-
 func BindUseCases(app *iris.Application, userRegisterUseCase register.UserRegisterUseCase) {
 	api := app.Party("/account")
 	handlers := NewHandlers(userRegisterUseCase)
