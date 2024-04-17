@@ -59,7 +59,7 @@ func (h *Handlers) UserRegister(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusBadRequest)
 		return
 	}
-	output, err := h.registerUseCase.Execute(register.UserRegisterInput{
+	output, err := h.registerUseCase.Execute(register.Input{
 		Email:    input.Email,
 		Password: input.Password,
 		Name:     input.Name,
@@ -73,7 +73,7 @@ func (h *Handlers) UserRegister(ctx iris.Context) {
 }
 
 func (h *Handlers) ChangePassword(ctx iris.Context) {
-	var input chagnepassword.UserChangePasswordInput
+	var input chagnepassword.Input
 	err := ctx.ReadJSON(&input)
 	if err != nil {
 		ctx.StatusCode(iris.StatusBadRequest)

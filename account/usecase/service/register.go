@@ -6,14 +6,14 @@ import (
 	"go-clean-arch-ddd/account/usecase/interface/out"
 )
 
-func (s *UserRegisterService) Execute(input register.UserRegisterInput) (register.UserRegisterOutput, error) {
+func (s *UserRegisterService) Execute(input register.Input) (register.Output, error) {
 	id := s.userRepository.NextID()
 	user := entity.NewUser(id, input.Email, input.Password, input.Name)
 	err := s.userRepository.Save(user)
 	if err != nil {
-		return register.UserRegisterOutput{}, err
+		return register.Output{}, err
 	}
-	return register.UserRegisterOutput{ID: user.ID}, nil
+	return register.Output{ID: user.ID}, nil
 }
 
 type UserRegisterService struct {

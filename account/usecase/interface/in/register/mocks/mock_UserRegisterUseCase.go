@@ -22,21 +22,21 @@ func (_m *MockUserRegisterUseCase) EXPECT() *MockUserRegisterUseCase_Expecter {
 }
 
 // Execute provides a mock function with given fields: input
-func (_m *MockUserRegisterUseCase) Execute(input register.UserRegisterInput) (register.UserRegisterOutput, error) {
+func (_m *MockUserRegisterUseCase) Execute(input register.Input) (register.Output, error) {
 	ret := _m.Called(input)
 
-	var r0 register.UserRegisterOutput
+	var r0 register.Output
 	var r1 error
-	if rf, ok := ret.Get(0).(func(register.UserRegisterInput) (register.UserRegisterOutput, error)); ok {
+	if rf, ok := ret.Get(0).(func(register.Input) (register.Output, error)); ok {
 		return rf(input)
 	}
-	if rf, ok := ret.Get(0).(func(register.UserRegisterInput) register.UserRegisterOutput); ok {
+	if rf, ok := ret.Get(0).(func(register.Input) register.Output); ok {
 		r0 = rf(input)
 	} else {
-		r0 = ret.Get(0).(register.UserRegisterOutput)
+		r0 = ret.Get(0).(register.Output)
 	}
 
-	if rf, ok := ret.Get(1).(func(register.UserRegisterInput) error); ok {
+	if rf, ok := ret.Get(1).(func(register.Input) error); ok {
 		r1 = rf(input)
 	} else {
 		r1 = ret.Error(1)
@@ -51,24 +51,24 @@ type MockUserRegisterUseCase_Execute_Call struct {
 }
 
 // Execute is a helper method to define mock.On call
-//   - input register.UserRegisterInput
+//   - input register.Input
 func (_e *MockUserRegisterUseCase_Expecter) Execute(input interface{}) *MockUserRegisterUseCase_Execute_Call {
 	return &MockUserRegisterUseCase_Execute_Call{Call: _e.mock.On("Execute", input)}
 }
 
-func (_c *MockUserRegisterUseCase_Execute_Call) Run(run func(input register.UserRegisterInput)) *MockUserRegisterUseCase_Execute_Call {
+func (_c *MockUserRegisterUseCase_Execute_Call) Run(run func(input register.Input)) *MockUserRegisterUseCase_Execute_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(register.UserRegisterInput))
+		run(args[0].(register.Input))
 	})
 	return _c
 }
 
-func (_c *MockUserRegisterUseCase_Execute_Call) Return(_a0 register.UserRegisterOutput, _a1 error) *MockUserRegisterUseCase_Execute_Call {
+func (_c *MockUserRegisterUseCase_Execute_Call) Return(_a0 register.Output, _a1 error) *MockUserRegisterUseCase_Execute_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockUserRegisterUseCase_Execute_Call) RunAndReturn(run func(register.UserRegisterInput) (register.UserRegisterOutput, error)) *MockUserRegisterUseCase_Execute_Call {
+func (_c *MockUserRegisterUseCase_Execute_Call) RunAndReturn(run func(register.Input) (register.Output, error)) *MockUserRegisterUseCase_Execute_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -1,14 +1,14 @@
 package register
 
 type UseCase interface {
-	Execute(input UserRegisterInput) (UserRegisterOutput, error)
+	Execute(input Input) (Output, error)
 }
 
-type UserRegisterOutput struct {
+type Output struct {
 	ID string
 }
 
-type UserRegisterInput struct {
+type Input struct {
 	Email    string
 	Password string
 	Name     string

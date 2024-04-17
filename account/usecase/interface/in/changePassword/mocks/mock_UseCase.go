@@ -22,11 +22,11 @@ func (_m *MockUseCase) EXPECT() *MockUseCase_Expecter {
 }
 
 // Execute provides a mock function with given fields: input
-func (_m *MockUseCase) Execute(input chagnepassword.UserChangePasswordInput) error {
+func (_m *MockUseCase) Execute(input chagnepassword.Input) error {
 	ret := _m.Called(input)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(chagnepassword.UserChangePasswordInput) error); ok {
+	if rf, ok := ret.Get(0).(func(chagnepassword.Input) error); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Error(0)
@@ -41,14 +41,14 @@ type MockUseCase_Execute_Call struct {
 }
 
 // Execute is a helper method to define mock.On call
-//   - input chagnepassword.UserChangePasswordInput
+//   - input chagnepassword.Input
 func (_e *MockUseCase_Expecter) Execute(input interface{}) *MockUseCase_Execute_Call {
 	return &MockUseCase_Execute_Call{Call: _e.mock.On("Execute", input)}
 }
 
-func (_c *MockUseCase_Execute_Call) Run(run func(input chagnepassword.UserChangePasswordInput)) *MockUseCase_Execute_Call {
+func (_c *MockUseCase_Execute_Call) Run(run func(input chagnepassword.Input)) *MockUseCase_Execute_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(chagnepassword.UserChangePasswordInput))
+		run(args[0].(chagnepassword.Input))
 	})
 	return _c
 }
@@ -58,7 +58,7 @@ func (_c *MockUseCase_Execute_Call) Return(_a0 error) *MockUseCase_Execute_Call 
 	return _c
 }
 
-func (_c *MockUseCase_Execute_Call) RunAndReturn(run func(chagnepassword.UserChangePasswordInput) error) *MockUseCase_Execute_Call {
+func (_c *MockUseCase_Execute_Call) RunAndReturn(run func(chagnepassword.Input) error) *MockUseCase_Execute_Call {
 	_c.Call.Return(run)
 	return _c
 }

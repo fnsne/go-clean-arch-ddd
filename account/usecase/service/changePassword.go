@@ -13,7 +13,7 @@ func NewUserChangePasswordService(userRepository out.UserRepository) *UserChange
 	return &UserChangePasswordService{userRepository: userRepository}
 }
 
-func (s *UserChangePasswordService) Execute(input chagnepassword.UserChangePasswordInput) error {
+func (s *UserChangePasswordService) Execute(input chagnepassword.Input) error {
 	user, err := s.userRepository.FindByID(input.ID)
 	if err != nil {
 		return err

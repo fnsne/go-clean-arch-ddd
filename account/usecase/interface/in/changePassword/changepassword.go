@@ -1,10 +1,10 @@
 package chagnepassword
 
 type UseCase interface {
-	Execute(input UserChangePasswordInput) error
+	Execute(input Input) error
 }
 
-type UserChangePasswordInput struct {
+type Input struct {
 	ID       string
 	Password string
 }

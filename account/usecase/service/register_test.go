@@ -32,7 +32,7 @@ func (suite *UserRegisterSuite) Test_UserRegisterSuccess() {
 		Password: "plainPassword123",
 		Name:     "123",
 	}).Return(nil)
-	output, err := useCase.Execute(register.UserRegisterInput{
+	output, err := useCase.Execute(register.Input{
 		Email:    "user1@email.123",
 		Password: "plainPassword123",
 		Name:     "123",

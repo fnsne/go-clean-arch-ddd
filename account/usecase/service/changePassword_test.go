@@ -36,7 +36,7 @@ func (suite *ChangePasswordTestSuite) Test_changePassword() {
 		Password: "newPassword",
 		Name:     "user1",
 	}).Return(nil)
-	err := changePasswordService.Execute(chagnepassword.UserChangePasswordInput{
+	err := changePasswordService.Execute(chagnepassword.Input{
 		ID:       "newID1",
 		Password: "newPassword",
 	})
