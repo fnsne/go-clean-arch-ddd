@@ -3,6 +3,7 @@ module go-clean-arch-ddd
 go 1.20
 
 require (
+	github.com/google/wire v0.6.0
 	github.com/kataras/iris/v12 v12.2.7
 	github.com/lithammer/shortuuid/v4 v4.0.0
 	github.com/stretchr/testify v1.8.4

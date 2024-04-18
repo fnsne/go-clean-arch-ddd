@@ -31,6 +31,27 @@ func BindUseCasesWithFx(app *iris.Application, p FxParams) {
 //================================================
 //above is for the use of uber fx DI
 
+//below is for the use of google wire DI
+//================================================
+
+type WireParams struct {
+	UserRegisterUseCase       register.UseCase
+	UserChangePasswordUseCase rename.UseCase
+	GetUserUseCase            getuser.UseCase
+}
+
+func BindUseCasesWithWire(app *iris.Application, p WireParams) {
+	BindUseCases(
+		app,
+		p.UserRegisterUseCase,
+		p.UserChangePasswordUseCase,
+		p.GetUserUseCase,
+	)
+}
+
+//================================================
+//above is for the use of google wire DI
+
 type UserRegisterInput struct {
 	Email    string
 	Password string
@@ -39,7 +60,7 @@ type UserRegisterInput struct {
 
 type Handlers struct {
 	registerUseCase register.UseCase
-	reanmeUseCase   rename.UseCase
+	renameUseCase   rename.UseCase
 	getUserUseCase  getuser.UseCase
 }
 
@@ -52,7 +73,7 @@ func BindUseCases(
 	api := app.Party("/account")
 	handlers := &Handlers{
 		registerUseCase: registerUseCase,
-		reanmeUseCase:   passwordUseCase,
+		renameUseCase:   passwordUseCase,
 		getUserUseCase:  getUserUseCase,
 	}
 
@@ -91,7 +112,7 @@ func (h *Handlers) Rename(ctx iris.Context) {
 		return
 	}
 	input.ID = id
-	err = h.reanmeUseCase.Execute(input)
+	err = h.renameUseCase.Execute(input)
 	if err != nil {
 		ctx.Application().Logger().Errorf("[handler] failed to change password: %v", err)
 		ctx.StatusCode(iris.StatusInternalServerError)
